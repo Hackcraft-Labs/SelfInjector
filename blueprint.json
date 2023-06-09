@@ -1,0 +1,17 @@
+{
+    "filters":[
+        "io.Content",
+        "fmt.HexArray",
+        "crypto.XOR"
+    ],
+    "targets":[
+        {
+            "input":"SelfInjector.c.tpl",
+            "output":"SelfInjector.c",
+            "variables":
+            {
+                "PATCH_ETW":false
+            }
+        }
+    ]
+}

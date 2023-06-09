@@ -1,0 +1,3 @@
+[submodule "Blueprint"]
+	path = Blueprint
+	url = https://github.com/Hackcraft-Labs/Blueprint.git
