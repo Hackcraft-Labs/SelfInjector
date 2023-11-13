@@ -9,3 +9,7 @@ Code in this repository is provided as an example use case and is not authored w
 More specifically, please keep in mind the following: 
 - The original shellcode buffer is left uncleared after decryption, which exposes it in cleartext.
 - The shellcode pages are allocated with `RWX` memory permissions.
+
+## Community
+
+Join the Hackcraft community discord server [here](https://discord.gg/KZZfsnQsja). On the server you can receive support and discuss issues related to SelfInjector.
